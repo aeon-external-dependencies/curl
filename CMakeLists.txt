@@ -71,9 +71,9 @@ set(OS "\"${CMAKE_SYSTEM_NAME}\"")
 include_directories(${PROJECT_BINARY_DIR}/include/curl)
 include_directories( ${CURL_SOURCE_DIR}/include )
 
-option(BUILD_CURL_EXE "Set to ON to build cURL executable." ON)
-option(BUILD_CURL_TESTS "Set to ON to build cURL tests." ON)
-option(CURL_STATICLIB "Set to ON to build libcurl with static linking." OFF)
+option(BUILD_CURL_EXE "Set to ON to build cURL executable." OFF)
+option(BUILD_CURL_TESTS "Set to ON to build cURL tests." OFF)
+option(CURL_STATICLIB "Set to ON to build libcurl with static linking." ON)
 option(ENABLE_ARES "Set to ON to enable c-ares support" OFF)
 option(ENABLE_THREADED_RESOLVER "Set to ON to enable POSIX threaded DNS lookup" OFF)
 
@@ -115,7 +115,7 @@ if(BUILD_DASHBOARD_REPORTS)
 endif(BUILD_DASHBOARD_REPORTS)
 
 if(MSVC)
-  option(BUILD_RELEASE_DEBUG_DIRS "Set OFF to build each configuration to a separate directory" OFF)
+  option(BUILD_RELEASE_DEBUG_DIRS "Set OFF to build each configuration to a separate directory" ON)
   mark_as_advanced(BUILD_RELEASE_DEBUG_DIRS)
 endif()
 
@@ -131,20 +131,20 @@ option(HTTP_ONLY "disables all protocols except HTTP (This overrides all CURL_DI
 mark_as_advanced(HTTP_ONLY)
 option(CURL_DISABLE_FTP "disables FTP" OFF)
 mark_as_advanced(CURL_DISABLE_FTP)
-option(CURL_DISABLE_LDAP "disables LDAP" OFF)
+option(CURL_DISABLE_LDAP "disables LDAP" ON)
 mark_as_advanced(CURL_DISABLE_LDAP)
 option(CURL_DISABLE_TELNET "disables Telnet" OFF)
 mark_as_advanced(CURL_DISABLE_TELNET)
-option(CURL_DISABLE_DICT "disables DICT" OFF)
+option(CURL_DISABLE_DICT "disables DICT" ON)
 mark_as_advanced(CURL_DISABLE_DICT)
-option(CURL_DISABLE_FILE "disables FILE" OFF)
+option(CURL_DISABLE_FILE "disables FILE" ON)
 mark_as_advanced(CURL_DISABLE_FILE)
 option(CURL_DISABLE_TFTP "disables TFTP" OFF)
 mark_as_advanced(CURL_DISABLE_TFTP)
 option(CURL_DISABLE_HTTP "disables HTTP" OFF)
 mark_as_advanced(CURL_DISABLE_HTTP)
 
-option(CURL_DISABLE_LDAPS "to disable LDAPS" OFF)
+option(CURL_DISABLE_LDAPS "to disable LDAPS" ON)
 mark_as_advanced(CURL_DISABLE_LDAPS)
 
 option(CURL_DISABLE_RTSP "to disable RTSP" OFF)
@@ -157,7 +157,7 @@ option(CURL_DISABLE_IMAP "to disable IMAP" OFF)
 mark_as_advanced(CURL_DISABLE_IMAP)
 option(CURL_DISABLE_SMTP "to disable SMTP" OFF)
 mark_as_advanced(CURL_DISABLE_SMTP)
-option(CURL_DISABLE_GOPHER "to disable Gopher" OFF)
+option(CURL_DISABLE_GOPHER "to disable Gopher" ON)
 mark_as_advanced(CURL_DISABLE_GOPHER)
 
 if(HTTP_ONLY)
@@ -1153,18 +1153,18 @@ set(VERSIONNUM              "${CURL_VERSION_NUM}")
 # Finally generate a "curl-config" matching this config
 configure_file("${CURL_SOURCE_DIR}/curl-config.in"
                "${CURL_BINARY_DIR}/curl-config" @ONLY)
-install(FILES "${CURL_BINARY_DIR}/curl-config"
-        DESTINATION bin
-        PERMISSIONS
-          OWNER_READ OWNER_WRITE OWNER_EXECUTE
-          GROUP_READ GROUP_EXECUTE
-          WORLD_READ WORLD_EXECUTE)
+#install(FILES "${CURL_BINARY_DIR}/curl-config"
+#        DESTINATION bin
+#        PERMISSIONS
+#          OWNER_READ OWNER_WRITE OWNER_EXECUTE
+#          GROUP_READ GROUP_EXECUTE
+#          WORLD_READ WORLD_EXECUTE)
 
 # Finally generate a pkg-config file matching this config
 configure_file("${CURL_SOURCE_DIR}/libcurl.pc.in"
                "${CURL_BINARY_DIR}/libcurl.pc" @ONLY)
-install(FILES "${CURL_BINARY_DIR}/libcurl.pc"
-        DESTINATION lib/pkgconfig)
+#install(FILES "${CURL_BINARY_DIR}/libcurl.pc"
+#        DESTINATION lib/pkgconfig)
 
 # This needs to be run very last so other parts of the scripts can take advantage of this.
 if(NOT CURL_CONFIG_HAS_BEEN_RUN_BEFORE)
@@ -1173,20 +1173,20 @@ endif()
 
 # Installation.
 # First, install generated curlbuild.h
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/include/curl/curlbuild.h"
-    DESTINATION include/curl )
+#install(FILES "${CMAKE_CURRENT_BINARY_DIR}/include/curl/curlbuild.h"
+#    DESTINATION include/curl )
 # Next, install other headers excluding curlbuild.h
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/curl"
-    DESTINATION include
-    FILES_MATCHING PATTERN "*.h"
-    PATTERN "curlbuild.h" EXCLUDE)
+#install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/curl"
+#    DESTINATION include
+#    FILES_MATCHING PATTERN "*.h"
+#    PATTERN "curlbuild.h" EXCLUDE)
 
 
 # Workaround for MSVS10 to avoid the Dialog Hell
 # FIXME: This could be removed with future version of CMake.
-if(MSVC_VERSION EQUAL 1600)
-  set(CURL_SLN_FILENAME "${CMAKE_CURRENT_BINARY_DIR}/CURL.sln")
-  if(EXISTS "${CURL_SLN_FILENAME}")
-    file(APPEND "${CURL_SLN_FILENAME}" "\n# This should be regenerated!\n")
-  endif()
-endif()
+#if(MSVC_VERSION EQUAL 1600)
+#  set(CURL_SLN_FILENAME "${CMAKE_CURRENT_BINARY_DIR}/CURL.sln")
+#  if(EXISTS "${CURL_SLN_FILENAME}")
+#    file(APPEND "${CURL_SLN_FILENAME}" "\n# This should be regenerated!\n")
+#  endif()
+#endif()

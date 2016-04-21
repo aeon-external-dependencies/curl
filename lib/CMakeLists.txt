@@ -1,4 +1,4 @@
-set(LIB_NAME libcurl)
+set(LIB_NAME curl)
 
 configure_file(${CURL_SOURCE_DIR}/include/curl/curlbuild.h.cmake
   ${CURL_BINARY_DIR}/include/curl/curlbuild.h)
@@ -74,6 +74,17 @@ add_library(
   ${CURL_USER_DEFINED_DYNAMIC_OR_STATIC}
   ${HHEADERS} ${CSOURCES}
   )
+  
+target_include_directories(${LIB_NAME}
+    PUBLIC 
+    ${CMAKE_CURRENT_BINARY_DIR}/../include
+    ${CMAKE_CURRENT_BINARY_DIR}/../include/curl
+    ${CMAKE_CURRENT_SOURCE_DIR}/..
+    ${CMAKE_CURRENT_SOURCE_DIR}/../include
+    ${CMAKE_CURRENT_BINARY_DIR}/..
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 
 if(MSVC AND CURL_STATICLIB)
   set_target_properties(${LIB_NAME} PROPERTIES STATIC_LIBRARY_FLAGS ${CMAKE_EXE_LINKER_FLAGS})
