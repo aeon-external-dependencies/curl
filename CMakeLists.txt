@@ -49,7 +49,8 @@ project( CURL C )
 if (MSVC)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4013 /wd4267")
 endif ()
-message(WARNING "the curl cmake build system is poorly maintained. Be aware")
+
+#message(WARNING "the curl cmake build system is poorly maintained. Be aware")
 
 file (READ ${CURL_SOURCE_DIR}/include/curl/curlver.h CURL_VERSION_H_CONTENTS)
 string (REGEX MATCH "#define LIBCURL_VERSION \"[^\"]*"
@@ -197,7 +198,7 @@ if(ENABLE_IPV6 AND NOT WIN32)
   endif()
 endif()
 
-option(ENABLE_MANUAL "to provide the built-in manual" ON)
+option(ENABLE_MANUAL "to provide the built-in manual" OFF)
 unset(USE_MANUAL CACHE) # TODO: cache NROFF/NROFF_MANOPT/USE_MANUAL vars?
 if(ENABLE_MANUAL)
   find_program(NROFF NAMES gnroff nroff)
@@ -228,7 +229,7 @@ if(ENABLE_MANUAL)
   endif()
 endif()
 # Required for building manual, docs, tests
-find_package(Perl REQUIRED)
+#find_package(Perl REQUIRED)
 
 # We need ansi c-flags, especially on HP
 set(CMAKE_C_FLAGS "${CMAKE_ANSI_CFLAGS} ${CMAKE_C_FLAGS}")
@@ -1159,16 +1160,16 @@ function(TRANSFORM_MAKEFILE_INC INPUT_FILE OUTPUT_FILE)
 
 endfunction()
 
-add_subdirectory(docs)
+#add_subdirectory(docs)
 add_subdirectory(lib)
 if(BUILD_CURL_EXE)
   add_subdirectory(src)
 endif()
 
-include(CTest)
-if(BUILD_TESTING)
-  add_subdirectory(tests)
-endif()
+#include(CTest)
+#if(BUILD_TESTING)
+#  add_subdirectory(tests)
+#endif()
 
 # Helper to populate a list (_items) with a label when conditions (the remaining
 # args) are satisfied
@@ -1299,6 +1300,9 @@ configure_file("${CURL_SOURCE_DIR}/libcurl.pc.in"
 if(NOT CURL_CONFIG_HAS_BEEN_RUN_BEFORE)
   set(CURL_CONFIG_HAS_BEEN_RUN_BEFORE 1 CACHE INTERNAL "Flag to track whether this is the first time running CMake or if CMake has been configured before")
 endif()
+
+set_target_properties(curl PROPERTIES
+                      FOLDER "External/curl")
 
 # install headers
 #install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/curl"
