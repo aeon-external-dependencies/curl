@@ -46,6 +46,9 @@ include(CMakeDependentOption)
 
 project( CURL C )
 
+if (MSVC)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4013 /wd4267")
+endif ()
 message(WARNING "the curl cmake build system is poorly maintained. Be aware")
 
 file (READ ${CURL_SOURCE_DIR}/include/curl/curlver.h CURL_VERSION_H_CONTENTS)
