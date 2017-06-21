@@ -7,7 +7,7 @@ function(SETUP_TEST TEST_NAME)          # ARGN are the files in the test
   include_directories(
     ${CURL_SOURCE_DIR}/lib          # To be able to reach "curl_setup_once.h"
     ${CURL_BINARY_DIR}/lib          # To be able to reach "curl_config.h"
-    ${CURL_BINARY_DIR}/include      # To be able to reach "curl/curlbuild.h"
+    ${CURL_BINARY_DIR}/include      # To be able to reach "curl/curl.h"
     )
   if(USE_ARES)
     include_directories(${CARES_INCLUDE_DIR})
@@ -43,6 +43,10 @@ if(NOT WIN32)
   # library at (tests)/libtest/.libs/libhostname.so
   set_target_properties(hostname PROPERTIES
       LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/.libs)
+  if(HIDES_CURL_PRIVATE_SYMBOLS)
+    set_property(TARGET hostname APPEND PROPERTY COMPILE_DEFINITIONS "CURL_HIDDEN_SYMBOLS")
+    set_property(TARGET hostname APPEND PROPERTY COMPILE_FLAGS ${CURL_CFLAG_SYMBOLS_HIDE})
+  endif()
 endif()
 
 # # files used only in some libcurl test programs

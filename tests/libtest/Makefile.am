@@ -5,11 +5,11 @@
 #                            | (__| |_| |  _ <| |___
 #                             \___|\___/|_| \_\_____|
 #
-# Copyright (C) 1998 - 2013, Daniel Stenberg, <daniel@haxx.se>, et al.
+# Copyright (C) 1998 - 2017, Daniel Stenberg, <daniel@haxx.se>, et al.
 #
 # This software is licensed as described in the file COPYING, which
 # you should have received as part of this distribution. The terms
-# are also available at http://curl.haxx.se/docs/copyright.html.
+# are also available at https://curl.haxx.se/docs/copyright.html.
 #
 # You may opt to use, copy, modify, merge, publish, distribute and/or sell
 # copies of the Software, and permit persons to whom the Software is
@@ -26,8 +26,6 @@ AUTOMAKE_OPTIONS = foreign nostdinc
 # being currently built and tested are searched before the library which
 # might possibly already be installed in the system.
 #
-# $(top_builddir)/include/curl for generated curlbuild.h included from curl.h
-# $(top_builddir)/include for generated curlbuild.h inc. from lib/curl_setup.h
 # $(top_srcdir)/include is for libcurl's external include files
 # $(top_builddir)/lib is for libcurl's generated lib/curl_config.h file
 # $(top_srcdir)/lib for libcurl's lib/curl_setup.h and other "borrowed" files
@@ -35,17 +33,13 @@ AUTOMAKE_OPTIONS = foreign nostdinc
 # $(top_srcdir)/ares is for in-tree c-ares's external include files
 
 if USE_EMBEDDED_ARES
-AM_CPPFLAGS = -I$(top_builddir)/include/curl \
-              -I$(top_builddir)/include      \
-              -I$(top_srcdir)/include        \
+AM_CPPFLAGS = -I$(top_srcdir)/include        \
               -I$(top_builddir)/lib          \
               -I$(top_srcdir)/lib            \
               -I$(top_builddir)/ares         \
               -I$(top_srcdir)/ares
 else
-AM_CPPFLAGS = -I$(top_builddir)/include/curl \
-              -I$(top_builddir)/include      \
-              -I$(top_srcdir)/include        \
+AM_CPPFLAGS = -I$(top_srcdir)/include        \
               -I$(top_builddir)/lib          \
               -I$(top_srcdir)/lib
 endif
@@ -66,9 +60,8 @@ SUPPORTFILES_LIBS = $(top_builddir)/lib/libcurl.la @CURL_NETWORK_LIBS@ @NSS_LIBS
 TESTUTIL_LIBS = $(top_builddir)/lib/libcurl.la @CURL_NETWORK_AND_TIME_LIBS@ @NSS_LIBS@
 endif
 
-# Dependencies (may need to be overriden)
+# Dependencies (may need to be overridden)
 LDADD = $(SUPPORTFILES_LIBS)
-DEPENDENCIES = $(top_builddir)/lib/libcurl.la
 
 # Makefile.inc provides the source defines (TESTUTIL, SUPPORTFILES,
 # noinst_PROGRAMS, lib*_SOURCES, and lib*_CFLAGS)
@@ -115,3 +108,6 @@ libhostname_la_SOURCES = sethostname.c sethostname.h
 
 libhostname_la_LIBADD =
 libhostname_la_DEPENDENCIES =
+
+checksrc:
+	@PERL@ $(top_srcdir)/lib/checksrc.pl $(srcdir)/*.c
