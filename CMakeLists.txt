@@ -630,7 +630,7 @@ endif()
 #
 # CA handling
 #
-set(CURL_CA_BUNDLE "auto" CACHE STRING
+set(CURL_CA_BUNDLE "none" CACHE STRING
     "Path to the CA bundle. Set 'none' to disable or 'auto' for auto-detection. Defaults to 'auto'.")
 set(CURL_CA_FALLBACK OFF CACHE BOOL
     "Set ON to use built-in CA store of TLS backend. Defaults to OFF")
